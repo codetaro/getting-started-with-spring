@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="controller"
+          class="chapter02.bankapp_interfaces.controller.FixedDepositControllerImpl">
+        <property name="fixedDepositService" ref="service"/>
+    </bean>
+
+    <bean id="service"
+          class="chapter02.bankapp_interfaces.service.FixedDepositServiceImpl">
+        <property name="fixedDepositDao" ref="dao"/>
+    </bean>
+
+    <bean id="dao"
+          class="chapter02.bankapp_interfaces.dao.FixedDepositHibernateDao"/>
+</beans>

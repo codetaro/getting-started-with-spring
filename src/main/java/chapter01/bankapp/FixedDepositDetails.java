@@ -1,10 +1,18 @@
 package chapter01.bankapp;
 
+import org.apache.log4j.Logger;
+
 public class FixedDepositDetails {
+    private static Logger logger = Logger.getLogger(FixedDepositDetails.class);
+
     private long id;
     private float depositAmount;
     private int tenure;
     private String email;
+
+    public FixedDepositDetails() {
+        logger.info("Created instance of FixedDepositDetails");
+    }
 
     public FixedDepositDetails(long id, float depositAmount, int tenure, String email) {
         this.id = id;
