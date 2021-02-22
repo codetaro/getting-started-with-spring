@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="service"
+          class="chapter03.bankapp_factorybean.service.FixedDepositServiceImpl">
+        <property name="fixedDepositDao" ref="dao"/>
+        <property name="eventSender" ref="eventSenderFactory"/>
+    </bean>
+
+    <bean id="dao" class="chapter03.bankapp_factorybean.dao.FixedDepositDaoImpl"/>
+
+    <bean id="eventSenderFactory" class="chapter03.bankapp_factorybean.event.EventSenderFactoryBean">
+        <property name="databasePropertiesFile" value="META-INF/config/database.properties"/>
+    </bean>
+</beans>

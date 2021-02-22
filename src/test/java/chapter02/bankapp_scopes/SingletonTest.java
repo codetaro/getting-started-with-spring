@@ -1,7 +1,7 @@
 package chapter02.bankapp_scopes;
 
 import chapter02.bankapp_interfaces.dao.FixedDepositDao;
-import chapter02.bankapp_scopes.controller.FixedDepositController;
+import chapter02.bankapp_interfaces.controller.FixedDepositController;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -16,7 +16,7 @@ public class SingletonTest {
     @BeforeClass
     public static void init() {
         context = new ClassPathXmlApplicationContext(
-                "classpath:META-INF/spring/chapter02/scopes/applicationContext.xml");
+                "classpath:META-INF/spring/chapter02/bankapp_scopes/applicationContext.xml");
     }
 
     @Test
@@ -39,7 +39,7 @@ public class SingletonTest {
     @Test
     public void testSingletonScope() {
         ApplicationContext anotherContext = new ClassPathXmlApplicationContext(
-                "classpath:META-INF/spring/chapter02/scopes/applicationContext.xml");
+                "classpath:META-INF/spring/chapter02/bankapp_scopes/applicationContext.xml");
         FixedDepositController fixedDepositController1 =
                 (FixedDepositController) anotherContext.getBean("controller");
         FixedDepositController fixedDepositController2 =

@@ -8,5 +8,7 @@ public interface FixedDepositController {
 
     boolean submit();
 
+    boolean submit(FixedDepositDetails fixedDepositDetails);
+
     FixedDepositDetails get();
 }

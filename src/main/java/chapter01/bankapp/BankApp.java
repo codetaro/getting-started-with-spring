@@ -9,7 +9,7 @@ public class BankApp {
 
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext(
-                "classpath:META-INF/spring/chapter01/applicationContext.xml");
+                "classpath:META-INF/spring/chapter01/bankapp/applicationContext.xml");
         FixedDepositController fixedDepositController =
                 (FixedDepositController) context.getBean("controller");
 

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="daoTemplate" abstract="true">
+        <property name="databaseOperations" ref="databaseOperations"/>
+    </bean>
+
+    <bean id="databaseOperations"
+          class="chapter03.bankapp_inheritance.utils.DatabaseOperations"/>
+
+    <bean id="serviceTemplate" class="chapter03.bankapp_constructor.base.ServiceTemplate">
+        <constructor-arg name="emailMessageSender" ref="emailMessageSender"/>
+        <constructor-arg name="jmsMessageSender" ref="jmsMessageSender"/>
+        <constructor-arg name="webServiceInvoker" ref="webServiceInvoker"/>
+    </bean>
+
+    <bean id="jmsMessageSender" class="chapter03.bankapp_inheritance.base.JmsMessageSender"/>
+    <bean id="emailMessageSender" class="chapter03.bankapp_inheritance.base.EmailMessageSender"/>
+    <bean id="webServiceInvoker" class="chapter03.bankapp_inheritance.base.WebServiceInvoker"/>
+
+    <bean id="controllerFactory"
+          class="chapter03.bankapp_inheritance.controller.ControllerFactory"/>
+
+    <bean id="controllerTemplate" factory-bean="controllerFactory"
+          factory-method="getController" abstract="true">
+    </bean>
+
+    <bean id="fixedDepositController" parent="controllerTemplate">
+        <constructor-arg index="0" value="fixedDepositController"/>
+        <property name="fixedDepositService" ref="fixedDepositService"/>
+    </bean>
+
+    <bean id="fixedDepositService"
+          class="chapter03.bankapp_constructor.service.FixedDepositServiceImpl"
+          parent="serviceTemplate">
+        <property name="fixedDepositDao" ref="fixedDepositDao"/>
+    </bean>
+
+    <bean id="fixedDepositDao" parent="daoTemplate"
+          class="chapter03.bankapp_inheritance.dao.FixedDepositDaoImpl"/>
+
+    <bean id="fixedDepositDetails"
+          class="chapter01.bankapp.FixedDepositDetails"
+          scope="prototype"/>
+
+    <bean id="personalBankingController" parent="controllerTemplate">
+        <constructor-arg index="0" value="personalBankingController"/>
+        <property name="personalBankingService" ref="personalBankingService"/>
+    </bean>
+
+    <bean id="personalBankingService"
+          class="chapter03.bankapp_constructor.service.PersonalBankingServiceImpl"
+          parent="serviceTemplate">
+        <property name="personalBankingDao" ref="personalBankingDao"/>
+    </bean>
+
+    <bean id="personalBankingDao" parent="daoTemplate"
+          class="chapter03.bankapp_inheritance.dao.PersonalBankingDaoImpl"/>
+
+    <bean id="userRequestController"
+          class="chapter03.bankapp_constructor.controller.UserRequestControllerImpl">
+        <constructor-arg index="0" ref="serviceTemplate"/>
+    </bean>
+
+    <bean id="transferFundsService"
+          class="chapter03.bankapp_constructor.service.TransferFundsServiceImpl">
+        <constructor-arg name="webServiceUrl" value="http://someUrl.com/xyz"/>
+        <constructor-arg name="active" value="true"/>
+        <constructor-arg name="numberOfRerialAttempts" value="5"/>
+        <constructor-arg name="timeout" value="200"/>
+    </bean>
+
+</beans>

@@ -14,7 +14,7 @@ public class PrototypeTest {
     @BeforeClass
     public static void init() {
         context = new ClassPathXmlApplicationContext(
-                "classpath:META-INF/spring/chapter02/scopes/applicationContext.xml");
+                "classpath:META-INF/spring/chapter02/bankapp_scopes/applicationContext.xml");
     }
 
     @Test

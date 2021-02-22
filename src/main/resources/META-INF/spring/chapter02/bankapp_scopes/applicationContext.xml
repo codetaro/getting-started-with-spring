@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="controller"
-          class="chapter02.bankapp_scopes.controller.FixedDepositControllerImpl">
+          class="chapter02.bankapp_interfaces.controller.FixedDepositControllerImpl">
         <property name="fixedDepositService" ref="service"/>
     </bean>
 

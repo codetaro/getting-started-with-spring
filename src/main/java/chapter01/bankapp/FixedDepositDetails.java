@@ -25,32 +25,36 @@ public class FixedDepositDetails {
         return id;
     }
 
-    public void setId(long id) {
+    public FixedDepositDetails setId(long id) {
         this.id = id;
+        return this;
     }
 
     public float getDepositAmount() {
         return depositAmount;
     }
 
-    public void setDepositAmount(float depositAmount) {
+    public FixedDepositDetails setDepositAmount(float depositAmount) {
         this.depositAmount = depositAmount;
+        return this;
     }
 
     public int getTenure() {
         return tenure;
     }
 
-    public void setTenure(int tenure) {
+    public FixedDepositDetails setTenure(int tenure) {
         this.tenure = tenure;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public FixedDepositDetails setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     @Override
