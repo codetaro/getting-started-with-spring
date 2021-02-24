@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="service"
+          class="chapter04.bankapp_dependencies.service.FixedDepositServiceImpl"
+          depends-on="eventSenderSelectorService">
+        <property name="fixedDepositDao">
+            <bean class="chapter04.bankapp_dependencies.dao.FixedDepositDaoImpl"/>
+        </property>
+        <constructor-arg index="0"
+                         value="META-INF/config/appConfig.properties"/>
+    </bean>
+
+    <bean id="eventSenderSelectorService"
+          class="chapter04.bankapp_dependencies.service.EventSenderSelectorServiceImpl">
+        <constructor-arg index="0" value="META-INF/config/appConfig.properties"/>
+    </bean>
+
+    <bean id="customerRequestService"
+          class="chapter04.bankapp_context_aware.service.CustomerRequestServiceContextAwareImpl">
+        <constructor-arg name="customerRequestDao" ref="customerRequestDao"/>
+    </bean>
+
+    <bean id="customerRequestDetails"
+          class="chapter04.bankapp_dependencies.domain.CustomerRequestDetails"
+          scope="prototype"/>
+    <bean id="customerRequestDao"
+          class="chapter04.bankapp_dependencies.dao.CustomerRequestDaoImpl"/>
+
+    <bean id="customerRegistrationService"
+          class="chapter04.bankapp_dependencies.service.CustomerRegistrationServiceImpl"
+          scope="prototype">
+        <constructor-arg name="customerRegistrationDetails" ref="customerRegistrationDetails"/>
+        <constructor-arg name="customerRegistrationDao" ref="customerRegistrationDao"/>
+    </bean>
+
+    <bean id="customerRegistrationDetails"
+          class="chapter04.bankapp_dependencies.domain.CustomerRegistrationDetails"
+          scope="prototype"/>
+    <bean id="customerRegistrationDao"
+          class="chapter04.bankapp_dependencies.dao.CustomerRegistrationDaoImpl"/>
+</beans>

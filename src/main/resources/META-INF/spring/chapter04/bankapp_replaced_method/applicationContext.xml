@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="customerRequestService"
+          class="chapter04.bankapp_replaced_method.service.CustomerRequestServiceImpl">
+        <constructor-arg name="customerRequestDao" ref="customerRequestDao"/>
+        <replaced-method name="getMyBean" replacer="methodReplacer"/>
+    </bean>
+
+    <bean id="methodReplacer"
+          class="chapter04.bankapp_replaced_method.service.MyMethodReplacer"/>
+
+    <bean id="customerRequestDao"
+          class="chapter04.bankapp_dependencies.dao.CustomerRequestDaoImpl"/>
+
+    <bean id="customerRequestDetails"
+          class="chapter04.bankapp_dependencies.domain.CustomerRequestDetails"
+          scope="prototype"/>
+</beans>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--  autowire byType  -->
+    <bean id="customerRegistrationService"
+          class="chapter04.bankapp_autowiring.service.CustomerRegistrationServiceImpl"
+          scope="prototype" autowire="byType"/>
+
+    <bean id="customerRegistrationDetails"
+          class="chapter04.bankapp_dependencies.domain.CustomerRegistrationDetails"
+          scope="prototype"/>
+
+    <bean id="customerRegistrationDao"
+          class="chapter04.bankapp_dependencies.dao.CustomerRegistrationDaoImpl"/>
+
+    <!--  autowire constructor  -->
+    <bean id="customerRequestService"
+          class="chapter04.bankapp_autowiring.service.CustomerRequestServiceImpl"
+          autowire="constructor"/>
+
+    <bean id="customerRequestDetails"
+          class="chapter04.bankapp_dependencies.domain.CustomerRequestDetails"
+          scope="prototype"/>
+
+    <bean id="customerRequestDao"
+          class="chapter04.bankapp_dependencies.dao.CustomerRequestDaoImpl"/>
+
+    <!--  autowire byName  -->
+    <bean id="fixedDepositService"
+          class="chapter04.bankapp_autowiring.service.FixedDepositServiceImpl"
+          autowire="byName"/>
+
+    <bean id="myFixedDepositDao"
+          class="chapter04.bankapp_dependencies.dao.FixedDepositDaoImpl"/>
+
+    <!--  autowire default/no  -->
+    <bean id="customerRegistrationService_"
+          class="chapter04.bankapp_autowiring.service.CustomerRegistrationServiceImpl"
+          scope="prototype" autowire="no"/>
+
+    <!--  unavailable for autowiring  -->
+    <bean id="accountStatementService"
+          class="chapter04.bankapp_autowiring.service.AccountStatementServiceImpl"
+          autowire="byType"/>
+
+    <bean id="accountStatementDao"
+          class="chapter04.bankapp_autowiring.dao.AccountStatementDaoImpl"
+          autowire-candidate="false"/>
+</beans>
