@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="fixedDepositService"
+          class="chapter05.bankapp.beanfactorypostprocessor.service.FixedDepositServiceImpl">
+        <property name="fixedDepositDao" ref="fixedDepositDao"/>
+    </bean>
+
+    <bean id="fixedDepositDao"
+          class="chapter05.bankapp.beanfactorypostprocessor.dao.FixedDepositDaoImpl"
+          init-method="initializeDbConnection" destroy-method="releaseDbConnection">
+        <property name="fixedDepositDetails" ref="fixedDepositDetails"/>
+    </bean>
+
+    <bean id="fixedDepositDetails"
+          class="chapter01.bankapp.FixedDepositDetails"
+          scope="prototype"/>
+
+    <bean class="chapter05.bankapp.beanpostprocessor.postprocessor.InstanceValidationBeanPostProcessor">
+        <property name="order" value="1"/>
+    </bean>
+
+    <bean class="chapter05.bankapp.beanfactorypostprocessor.postprocessor.ApplicationConfigurer"/>
+
+</beans>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="dataSource"
+          class="chapter05.propertySourcesPlaceholderConfigurer.domain.DataSource">
+        <property name="url" value="test url value"/>
+        <property name="username" value="test username value"/>
+        <property name="password" value="test password value"/>
+        <property name="driverClass" value="test driverClass value"/>
+    </bean>
+
+    <bean id="webServiceConfiguration"
+          class="chapter05.propertySourcesPlaceholderConfigurer.domain.WebServiceConfiguration">
+        <property name="webServiceUrl" value="this webservice url needs to be replaced"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:database.properties</value>
+                <value>classpath:webservice.properties</value>
+            </list>
+        </property>
+    </bean>
+</beans>
