@@ -1,6 +1,6 @@
-package chapter04.bankapp_autowiring.dao;
+package chapter06.bankapp.annotations.dao;
 
-import chapter04.bankapp_autowiring.domain.AccountStatement;
+import chapter06.bankapp.annotations.domain.AccountStatement;
 import lombok.extern.log4j.Log4j;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +9,6 @@ import java.util.Date;
 @Repository(value = "accountStatementDao")
 @Log4j
 public class AccountStatementDaoImpl implements AccountStatementDao {
-
     @Override
     public AccountStatement getAccountStatement(Date from, Date to) {
         log.info("Getting account statement");
