@@ -18,6 +18,7 @@ create table if not exists `fixed_deposit_details` (
     `amount` int(10) not null,
     `tenure` int(10) not null,
     `active` char(1) not null default 'Y',
+    `email` char(100) not null,
     primary key (`fixed_deposit_id`),
     key `FK_fixed_deposit_details_bank_account_details` (`account_id`),
     constraint `FK_fixed_deposit_details_bank_account_details` foreign key (`account_id`) references `bank_account_details` (`account_id`) on delete no action on update no action
