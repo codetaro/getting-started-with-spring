@@ -2,3 +2,4 @@
 /target/
 /getting-started-with-spring.iml
 /activemq-data/localhost/KahaDB/
+/out/artifacts/*
