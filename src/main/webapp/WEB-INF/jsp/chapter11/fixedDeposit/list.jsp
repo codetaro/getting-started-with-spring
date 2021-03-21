@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <html>
 <head>
     <title>Fixed Deposit list</title>
@@ -10,7 +9,7 @@
             border-collapse: collapse;
         }
 
-        .th, .th {
+        .td, .th {
             border: 1px solid;
             font-family: Arial;
             font-size: 12px;
@@ -38,7 +37,7 @@
                         <tr bgcolor="#99CCFF">
                             <th class="th">ID</th>
                             <th class="th">Deposit amount</th>
-                            <th class="th">Tenure</th>
+                            <th class="th">Maturity date</th>
                             <th class="th">Email</th>
                             <th class="th">Action</th>
                         </tr>
@@ -46,13 +45,11 @@
                             <tr>
                                 <td class="td"><c:out value="${fixedDeposit.id}"/></td>
                                 <td class="td"><c:out value="${fixedDeposit.depositAmount}"/></td>
-                                <td class="td"><c:out value="${fixedDeposit.tenure}"/></td>
+                                <td class="td"><c:out value="${fixedDeposit.maturityDate}"/></td>
                                 <td class="td"><c:out value="${fixedDeposit.email}"/></td>
                                 <td class="td">
-                                    <a href="${pageContext.request.contextPath}/fixedDeposit?fdAction=close&fixedDepositId=${fixedDeposit.id}"
-                                       style="color: green">Close</a>
-                                    <a href="${pageContext.request.contextPath}/fixedDeposit?fdAction=view&fixedDepositId=${fixedDeposit.id}"
-                                       style="color: green">Edit</a>
+                                    <a href="${pageContext.request.contextPath}/fixedDeposit?fdAction=close&fixedDepositId=${fixedDeposit.id}" style="color: green">Close</a>
+                                    <a href="${pageContext.request.contextPath}/fixedDeposit?fdAction=view&fixedDepositId=${fixedDeposit.id}" style="color: green">Edit</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -60,7 +57,7 @@
                 </td>
             </tr>
             <tr align="center">
-                <td><input type="submit" value="Create new Fixed Deposit"/></td>
+                <td><input type="submit" value="Create new Fixed Deposit"></td>
             </tr>
         </table>
     </form>
