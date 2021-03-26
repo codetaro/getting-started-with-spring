@@ -1,3 +1,1 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
-<c:redirect url="/fixedDeposit/list"/>
+FixedDepositWS RESTful web service is up !!
