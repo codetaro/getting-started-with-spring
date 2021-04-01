@@ -29,7 +29,7 @@ public class FixedDepositController {
     public ModelAndView listFixedDeposits() {
         Map<String, List<FixedDepositDetails>> modelData = new HashMap<>();
         modelData.put("fdList", fixedDepositService.getFixedDeposits());
-        return new ModelAndView("fixedDepositList", modelData);
+        return new ModelAndView("bankapp/fixedDepositList", modelData);
     }
 
     @RequestMapping(params = "fdAction=createFDForm", method = RequestMethod.POST)
@@ -38,7 +38,7 @@ public class FixedDepositController {
         fixedDepositDetails.setEmail("You must enter a valid email");
         ModelMap modelData = new ModelMap();
         modelData.addAttribute(fixedDepositDetails);
-        return new ModelAndView("createFixedDepositForm", modelData);
+        return new ModelAndView("bankapp/createFixedDepositForm", modelData);
     }
 
     @RequestMapping(params = "fdAction=create", method = RequestMethod.POST)
@@ -74,7 +74,7 @@ public class FixedDepositController {
 
         if (modelData.size() > 0) { // --this means there are validation errors
             modelData.put("fixedDepositDetails", fixedDepositDetails);
-            return new ModelAndView("createFixedDepositForm", modelData);
+            return new ModelAndView("bankapp/createFixedDepositForm", modelData);
         } else {
             fixedDepositService.saveFixedDeposit(fixedDepositDetails);
             return new ModelAndView("redirect:/fixedDeposit/list");
@@ -116,7 +116,7 @@ public class FixedDepositController {
 
         if (modelData.size() > 0) { // --this means there are validation errors
             modelData.put("fixedDepositDetails", fixedDepositDetails);
-            return new ModelAndView("editFixedDepositForm", modelData);
+            return new ModelAndView("bankapp/editFixedDepositForm", modelData);
         } else {
             fixedDepositService.editFixedDeposit(fixedDepositDetails);
             return new ModelAndView("redirect:/fixedDeposit/list");
@@ -136,7 +136,7 @@ public class FixedDepositController {
                 .getFixedDeposit(Integer.parseInt(request.getParameter("fixedDepositId")));
         ModelMap modelMap = new ModelMap();
         modelMap.addAttribute(fixedDepositDetails);
-        return new ModelAndView("editFixedDepositForm", modelMap);
+        return new ModelAndView("bankapp/editFixedDepositForm", modelMap);
     }
 
     @ExceptionHandler

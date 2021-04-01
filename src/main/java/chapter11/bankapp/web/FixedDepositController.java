@@ -50,7 +50,7 @@ public class FixedDepositController {
     @RequestMapping(params = "fdAction=createFDForm", method = RequestMethod.POST)
     public String showOpenFixedDepositForm() {
         log.info("showOpenFixedDepositForm() method: Showing form for opening a new fixed deposit");
-        return "createFixedDepositForm";
+        return "bankapp/createFixedDepositForm";
     }
 
     @RequestMapping(params = "fdAction=create", method = RequestMethod.POST)
@@ -62,7 +62,7 @@ public class FixedDepositController {
 
         if (bindingResult.hasErrors()) {
             log.info("openFixedDeposit() method: Validation errors - re-displaying form for opening a new fixed deposit");
-            return "createFixedDepositForm";
+            return "bankapp/createFixedDepositForm";
         } else {
             fixedDepositService.saveFixedDeposit(fixedDepositDetails);
             sessionStatus.setComplete();
@@ -80,7 +80,7 @@ public class FixedDepositController {
 
         if (bindingResult.hasErrors()) {
             log.info("editFixedDeposit() method: Validation errors - re-displaying form for editing a fixed deposit");
-            return "editFixedDepositForm";
+            return "bankapp/editFixedDepositForm";
         } else {
             fixedDepositService.editFixedDeposit(fixedDepositDetails);
             sessionStatus.setComplete();
@@ -105,7 +105,7 @@ public class FixedDepositController {
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("editableFixedDepositDetails", fixedDepositDetails);
         log.info("viewFixedDepositDetails() method: Fixed deposit details loaded from data store. Showing form for editing the loaded fixed deposit.");
-        return new ModelAndView("editFixedDepositForm", modelMap);
+        return new ModelAndView("bankapp/editFixedDepositForm", modelMap);
     }
 
     @InitBinder(value = "newFixedDepositDetails")

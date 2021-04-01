@@ -8,24 +8,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.DeferredResult;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 @Controller
 @RequestMapping("/fixedDeposits")
 @Log4j
 public class FixedDepositController {
+    private static final String LIST_METHOD = "getFixedDepositList";
+    private static final String GET_FD_METHOD = "getFixedDeposit";
+    private static final String OPEN_FD_METHOD = "openFixedDeposit";
+    private static final String EDIT_FD_METHOD = "editFixedDeposit";
+    private static final String CLOSE_FD_METHOD = "closeFixedDeposit";
+
+    @SuppressWarnings("rawtypes")
+    private final Queue<ResultContext> deferredResultQueue = new ConcurrentLinkedQueue<>();
 
     @Autowired
     private FixedDepositService fixedDepositService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<FixedDepositDetails>> getFixedDepositList() {
+    public DeferredResult<ResponseEntity<List<FixedDepositDetails>>> getFixedDepositList() {
         log.info("getFixedDepositList() method: Getting list of fixed deposits");
-        return new ResponseEntity<>(fixedDepositService.getFixedDeposits(), HttpStatus.OK);
+
+        DeferredResult<ResponseEntity<List<FixedDepositDetails>>> dr = new DeferredResult<>();
+
+        ResultContext<ResponseEntity<List<FixedDepositDetails>>> resultContext = new ResultContext();
+        resultContext.setDeferredResult(dr);
+        resultContext.setMethodToInvoke(LIST_METHOD);
+        resultContext.setArgs(new HashMap<String, Object>());
+
+        deferredResultQueue.add(resultContext);
+        return dr;
     }
 
     @RequestMapping(value = "/{fixedDepositId}", method = RequestMethod.GET)
@@ -36,20 +59,22 @@ public class FixedDepositController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<FixedDepositDetails> openFixedDeposit(
+    public DeferredResult<ResponseEntity<FixedDepositDetails>> openFixedDeposit(
             @RequestBody FixedDepositDetails fixedDepositDetails,
             BindingResult bindingResult) {
 
-        new FixedDepositValidator().validate(fixedDepositDetails, bindingResult);
+        DeferredResult<ResponseEntity<FixedDepositDetails>> dr = new DeferredResult<>();
 
-        if (bindingResult.hasErrors()) {
-            log.info("openFixedDeposit() method: Validation errors occurred");
-            throw new ValidationException("Validation errors occurred");
-        } else {
-            fixedDepositService.saveFixedDeposit(fixedDepositDetails);
-            log.info("openFixedDeposit() method: Fixed deposit details successfully saved.");
-            return new ResponseEntity<>(fixedDepositDetails, HttpStatus.CREATED);
-        }
+        ResultContext<ResponseEntity<FixedDepositDetails>> resultContext = new ResultContext<>();
+        resultContext.setDeferredResult(dr);
+        resultContext.setMethodToInvoke(OPEN_FD_METHOD);
+        Map<String, Object> args = new HashMap<>();
+        args.put("fixedDepositDetails", fixedDepositDetails);
+        args.put("bindingResult", bindingResult);
+        resultContext.setArgs(args);
+
+        deferredResultQueue.add(resultContext);
+        return dr;
     }
 
     @RequestMapping(method = RequestMethod.PUT)
@@ -84,5 +109,40 @@ public class FixedDepositController {
     public String handleException(Exception ex) {
         log.info("handling ValidationException " + ex.getMessage());
         return ex.getMessage();
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    @Scheduled(fixedRate = 10000)
+    public void processResults() {
+        for (ResultContext resultContext : deferredResultQueue) {
+            if (resultContext.getMethodToInvoke() == LIST_METHOD) {
+                resultContext.getDeferredResult().setResult(
+                        new ResponseEntity<List<FixedDepositDetails>>(
+                                fixedDepositService.getFixedDeposits(), HttpStatus.OK));
+            }
+
+            if (resultContext.getMethodToInvoke() == OPEN_FD_METHOD) {
+                FixedDepositDetails fixedDepositDetails = (FixedDepositDetails) resultContext
+                        .getArgs().get("fixedDepositDetails");
+                BindingResult bindingResult = (BindingResult) resultContext
+                        .getArgs().get("bindingResult");
+
+                new FixedDepositValidator().validate(fixedDepositDetails, bindingResult);
+
+                if (bindingResult.hasErrors()) {
+                    log.info("openFixedDeposit() method: Validation errors occurred");
+                    resultContext.getDeferredResult().setErrorResult(
+                            new ValidationException("Validation errors occurred"));
+                } else {
+                    fixedDepositService.saveFixedDeposit(fixedDepositDetails);
+                    resultContext.getDeferredResult().setResult(
+                            new ResponseEntity<FixedDepositDetails>(
+                                    fixedDepositDetails, HttpStatus.CREATED));
+                    log.info("openFixedDeposit() method: Fixed deposit details successfully saved.");
+                }
+            }
+            // ...
+            deferredResultQueue.remove(resultContext);
+        }
     }
 }
